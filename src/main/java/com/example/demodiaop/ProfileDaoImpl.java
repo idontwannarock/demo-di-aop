@@ -2,9 +2,10 @@ package com.example.demodiaop;
 
 import java.sql.*;
 
-public class ProfileDao {
+public class ProfileDaoImpl implements Profile {
 
-    String getPasswordFromDb(String account) {
+    @Override
+    public String getPassword(String account) {
         String url = "jdbc:mysql://localhost:3306/test";
         String dbUsername = "sa";
         String dbPassword = "password";

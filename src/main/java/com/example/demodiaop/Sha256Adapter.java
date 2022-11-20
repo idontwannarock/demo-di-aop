@@ -4,9 +4,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Sha256Adapter {
+public class Sha256Adapter implements Hash {
 
-    String getHashedPassword(String account, String password) {
+    @Override
+    public String compute(String account, String password) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));

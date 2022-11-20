@@ -7,9 +7,10 @@ import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 
 import java.io.IOException;
 
-public class SlackAdapter {
+public class SlackAdapter implements Notification {
 
-    void notify(String account) {
+    @Override
+    public void notify(String account) {
         try {
             Slack slack = Slack.getInstance();
             MethodsClient methodClient = slack.methods("slackToken");

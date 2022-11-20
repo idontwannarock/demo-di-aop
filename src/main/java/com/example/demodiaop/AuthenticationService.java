@@ -5,19 +5,28 @@ import org.slf4j.LoggerFactory;
 
 public class AuthenticationService {
 
-    private final ProfileDao profileDao;
-    private final Sha256Adapter sha256Adapter;
+    private final Profile profile;
+    private final Hash hash;
     private final OtpService otpService;
-    private final SlackAdapter slackAdapter;
+    private final Notification notification;
     private final FailedCounter failedCounter;
     private final Logger logger;
 
+    public AuthenticationService(Profile profile, Hash hash, OtpService otpService, Notification notification, FailedCounter failedCounter, Logger logger) {
+        this.profile = profile;
+        this.hash = hash;
+        this.otpService = otpService;
+        this.notification = notification;
+        this.failedCounter = failedCounter;
+        this.logger = logger;
+    }
+
     public AuthenticationService() {
-        this.profileDao = new ProfileDao();
-        this.sha256Adapter = new Sha256Adapter();
-        this.otpService = new OtpService();
-        this.slackAdapter = new SlackAdapter();
-        this.failedCounter = new FailedCounter();
+        this.profile = new ProfileDaoImpl();
+        this.hash = new Sha256Adapter();
+        this.otpService = new OtpServiceImpl();
+        this.notification = new SlackAdapter();
+        this.failedCounter = new FailedCounterImpl();
         this.logger = LoggerFactory.getLogger(AuthenticationService.class);
     }
 
@@ -27,8 +36,8 @@ public class AuthenticationService {
             throw new AuthenticationException("account: " + account + " is locked");
         }
 
-        String passwordFromDb = profileDao.getPasswordFromDb(account);
-        String hashedPassword = sha256Adapter.getHashedPassword(account, password);
+        String passwordFromDb = profile.getPassword(account);
+        String hashedPassword = hash.compute(account, password);
         String currentOtp = otpService.getCurrentOtp(account);
 
         if (hashedPassword.equals(passwordFromDb) && currentOtp.equals(otp)) {
@@ -37,7 +46,7 @@ public class AuthenticationService {
         } else {
             failedCounter.increase(account);
             logFailedCount(account);
-            slackAdapter.notify(account);
+            notification.notify(account);
             return false;
         }
     }
