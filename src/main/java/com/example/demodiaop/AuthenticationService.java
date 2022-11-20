@@ -43,6 +43,6 @@ public class AuthenticationService {
 
     private void logFailedCount(String account) {
         int failedCount = failedCounter.getFailedCount(account);
-        logger.info(String.format("account: {} failed times: {}", account, failedCount));
+        logger.info("account: " + account + " failed times: " + failedCount);
     }
 }

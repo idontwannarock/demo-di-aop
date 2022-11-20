@@ -1,14 +1,16 @@
 package com.example.demodiaop;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
 class AuthenticationServiceTest {
 
     private static final String defaultAccount = "Howard";
+    private static final Integer defaultFailedCount = 34;
 
     private Profile profile;
     private Hash hash;
@@ -57,12 +59,105 @@ class AuthenticationServiceTest {
         shouldBeInvalid(isValid);
     }
 
+    @Test
+    void reset_failed_count_when_valid() {
+        // arrange
+        whenValid();
+        // assert
+        shouldResetFailedCount(defaultAccount);
+    }
+
+    @Test
+    void add_failed_count_when_invalid() {
+        // arrange
+        whenInvalid();
+        // assert
+        shouldAddFailedCount(defaultAccount);
+    }
+
+    @Test
+    void log_failed_count_when_invalid() {
+        // arrange
+        givenFailedCount(defaultAccount, defaultFailedCount);
+        whenInvalid();
+        // assert
+        logShouldContains(defaultAccount, defaultFailedCount.toString());
+    }
+
+    @Test
+    void notify_user_when_invalid() {
+        // arrange
+        whenInvalid();
+        // assert
+        shouldNotify(defaultAccount);
+    }
+
+    @Test
+    void account_is_locked() {
+        // arrange
+        givenAccountIsLocked(defaultAccount, true);
+        // assert
+        shouldThrowAuthenticationException();
+    }
+
+    private void shouldThrowAuthenticationException() {
+        Assertions.assertThatThrownBy(() -> authenticationService.isValid(defaultAccount, "password", "123456"))
+                .isInstanceOf(AuthenticationException.class)
+                .hasMessageContaining(defaultAccount);
+    }
+
+    private void givenAccountIsLocked(String account, boolean isLocked) {
+        Mockito.when(failedCounter.isLocked(account)).thenReturn(isLocked);
+    }
+
+    private void shouldNotify(String account) {
+        Mockito.verify(notification, Mockito.times(1)).notify(account);
+    }
+
+    private void logShouldContains(String account, String failedCount) {
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(logger).info(argumentCaptor.capture());
+        Assertions.assertThat(argumentCaptor.getValue()).contains(account, failedCount);
+    }
+
+    private void givenFailedCount(String account, int failedCount) {
+        Mockito.when(failedCounter.getFailedCount(account)).thenReturn(failedCount);
+    }
+
+    private void shouldAddFailedCount(String account) {
+        Mockito.verify(failedCounter, Mockito.times(1)).increase(account);
+    }
+
+    private void whenInvalid() {
+        // arrange
+        givenPasswordFromProfile(defaultAccount, "my hashed password");
+        givenHashedPassword(defaultAccount, "password", "my hashed password");
+        givenOtp(defaultAccount, "123456");
+
+        // act
+        verify(defaultAccount, "password", "wrong otp");
+    }
+
+    private void shouldResetFailedCount(String account) {
+        Mockito.verify(failedCounter, Mockito.times(1)).reset(account);
+    }
+
+    private void whenValid() {
+        // arrange
+        givenPasswordFromProfile(defaultAccount, "my hashed password");
+        givenHashedPassword(defaultAccount, "password", "my hashed password");
+        givenOtp(defaultAccount, "123456");
+
+        // act
+        verify(defaultAccount, "password", "123456");
+    }
+
     private void shouldBeInvalid(boolean isValid) {
-        Assertions.assertFalse(isValid);
+        Assertions.assertThat(isValid).isFalse();
     }
 
     private void shouldBeValid(boolean isValid) {
-        Assertions.assertTrue(isValid);
+        Assertions.assertThat(isValid).isTrue();
     }
 
     private boolean verify(String account, String password, String otp) {
