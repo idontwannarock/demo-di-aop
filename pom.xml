@@ -17,6 +17,7 @@
         <protobuf-java.version>3.21.9</protobuf-java.version>
         <junit-jupiter-enging.version>5.9.0</junit-jupiter-enging.version>
         <slack-api-client.version>1.27.1</slack-api-client.version>
+        <mockito-core.version>4.8.0</mockito-core.version>
     </properties>
 
     <dependencies>
@@ -48,6 +49,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter-enging.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
