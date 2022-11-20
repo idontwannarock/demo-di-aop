@@ -43,6 +43,24 @@ class AuthenticationServiceTest {
         shouldBeValid(isValid);
     }
 
+    @Test
+    void is_invalid() {
+        // arrange
+        givenPasswordFromProfile(defaultAccount, "my hashed password");
+        givenHashedPassword(defaultAccount, "password", "my hashed password");
+        givenOtp(defaultAccount, "123456");
+
+        // act
+        boolean isValid = verify(defaultAccount, "password", "wrong otp");
+
+        // assert
+        shouldBeInvalid(isValid);
+    }
+
+    private void shouldBeInvalid(boolean isValid) {
+        Assertions.assertFalse(isValid);
+    }
+
     private void shouldBeValid(boolean isValid) {
         Assertions.assertTrue(isValid);
     }
