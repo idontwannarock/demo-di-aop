@@ -1,7 +1,6 @@
 package com.example.demodiaop;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AuthenticationService {
 
@@ -19,15 +18,6 @@ public class AuthenticationService {
         this.notification = notification;
         this.failedCounter = failedCounter;
         this.logger = logger;
-    }
-
-    public AuthenticationService() {
-        this.profile = new ProfileDaoImpl();
-        this.hash = new Sha256Adapter();
-        this.otpService = new OtpServiceImpl();
-        this.notification = new SlackAdapter();
-        this.failedCounter = new FailedCounterImpl();
-        this.logger = LoggerFactory.getLogger(AuthenticationService.class);
     }
 
     public boolean isValid(String account, String password, String otp) {
