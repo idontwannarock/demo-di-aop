@@ -25,12 +25,6 @@ public class AuthenticationService implements Authentication {
         String hashedPassword = hash.compute(account, password);
         String currentOtp = otpService.getCurrentOtp(account);
 
-        if (hashedPassword.equals(passwordFromDb) && currentOtp.equals(otp)) {
-            failedCounter.reset(account);
-            return true;
-        } else {
-            failedCounter.increase(account);
-            return false;
-        }
+        return hashedPassword.equals(passwordFromDb) && currentOtp.equals(otp);
     }
 }
