@@ -1,21 +1,17 @@
 package com.example.demodiaop;
 
-import org.slf4j.Logger;
-
 public class AuthenticationService implements Authentication {
 
     private final Profile profile;
     private final Hash hash;
     private final OtpService otpService;
     private final FailedCounter failedCounter;
-    private final Logger logger;
 
-    public AuthenticationService(Profile profile, Hash hash, OtpService otpService, FailedCounter failedCounter, Logger logger) {
+    public AuthenticationService(Profile profile, Hash hash, OtpService otpService, FailedCounter failedCounter) {
         this.profile = profile;
         this.hash = hash;
         this.otpService = otpService;
         this.failedCounter = failedCounter;
-        this.logger = logger;
     }
 
     @Override
@@ -34,13 +30,7 @@ public class AuthenticationService implements Authentication {
             return true;
         } else {
             failedCounter.increase(account);
-            logFailedCount(account);
             return false;
         }
-    }
-
-    private void logFailedCount(String account) {
-        int failedCount = failedCounter.getFailedCount(account);
-        logger.info("account: {} failed times: {}", account, failedCount);
     }
 }
