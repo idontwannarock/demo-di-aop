@@ -2,7 +2,7 @@ package com.example.demodiaop;
 
 import org.slf4j.Logger;
 
-public class AuthenticationService {
+public class AuthenticationService implements Authentication {
 
     private final Profile profile;
     private final Hash hash;
@@ -20,6 +20,7 @@ public class AuthenticationService {
         this.logger = logger;
     }
 
+    @Override
     public boolean isValid(String account, String password, String otp) {
         boolean isLocked = failedCounter.isLocked(account);
         if (isLocked) {

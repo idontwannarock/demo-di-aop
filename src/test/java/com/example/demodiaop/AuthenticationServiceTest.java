@@ -19,7 +19,7 @@ class AuthenticationServiceTest {
     private Notification notification;
     private FailedCounter failedCounter;
     private Logger logger;
-    private AuthenticationService authenticationService;
+    private Authentication authentication;
 
     @BeforeEach
     void setUp() {
@@ -29,7 +29,7 @@ class AuthenticationServiceTest {
         notification = Mockito.mock(Notification.class);
         failedCounter = Mockito.mock(FailedCounter.class);
         logger = Mockito.mock(Logger.class);
-        authenticationService = new AuthenticationService(profile, hash, otpService, notification, failedCounter, logger);
+        authentication = new AuthenticationService(profile, hash, otpService, notification, failedCounter, logger);
     }
 
     @Test
@@ -102,7 +102,7 @@ class AuthenticationServiceTest {
     }
 
     private void shouldThrowAuthenticationException() {
-        Assertions.assertThatThrownBy(() -> authenticationService.isValid(defaultAccount, "password", "123456"))
+        Assertions.assertThatThrownBy(() -> authentication.isValid(defaultAccount, "password", "123456"))
                 .isInstanceOf(AuthenticationException.class)
                 .hasMessageContaining(defaultAccount);
     }
@@ -164,7 +164,7 @@ class AuthenticationServiceTest {
     }
 
     private boolean verify(String account, String password, String otp) {
-        return authenticationService.isValid(account, password, otp);
+        return authentication.isValid(account, password, otp);
     }
 
     private void givenOtp(String account, String otp) {
