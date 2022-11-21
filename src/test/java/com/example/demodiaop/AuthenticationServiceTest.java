@@ -30,7 +30,7 @@ class AuthenticationServiceTest {
         failedCounter = Mockito.mock(FailedCounter.class);
         logger = Mockito.mock(Logger.class);
 
-        authentication = new AuthenticationService(profile, hash, otpService, failedCounter);
+        authentication = new AuthenticationService(profile, hash, otpService);
         authentication = new FailedCounterDecorator(authentication, failedCounter);
         authentication = new LogDecorator(authentication, failedCounter, logger);
         authentication = new NotificationDecorator(authentication, notification);

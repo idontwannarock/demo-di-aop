@@ -12,6 +12,7 @@ public class FailedCounterDecorator implements Authentication {
 
     @Override
     public boolean isValid(String account, String password, String otp) {
+        checkAccountLocked(account);
         boolean isValid = authentication.isValid(account, password, otp);
         if (isValid) {
             reset(account);
@@ -19,6 +20,13 @@ public class FailedCounterDecorator implements Authentication {
             increase(account);
         }
         return isValid;
+    }
+
+    private void checkAccountLocked(String account) {
+        boolean isLocked = failedCounter.isLocked(account);
+        if (isLocked) {
+            throw new AuthenticationException("account: " + account + " is locked");
+        }
     }
 
     void reset(String account) {
