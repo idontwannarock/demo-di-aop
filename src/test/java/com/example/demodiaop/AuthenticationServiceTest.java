@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
@@ -105,6 +106,19 @@ class AuthenticationServiceTest {
         shouldThrowAuthenticationException();
     }
 
+    @Test
+    void check_decorator_order_when_invalid() {
+        whenInvalid();
+        decoratorsShouldBeInvokedInOrderWhenInvalid();
+    }
+
+    private void decoratorsShouldBeInvokedInOrderWhenInvalid() {
+        InOrder order = Mockito.inOrder(failedCounter, logger, notification);
+        order.verify(failedCounter, Mockito.times(1)).increase(Mockito.anyString());
+        order.verify(logger, Mockito.times(1)).info(Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
+        order.verify(notification, Mockito.times(1)).notify(Mockito.anyString(), Mockito.anyString());
+    }
+
     private void shouldThrowAuthenticationException() {
         Assertions.assertThatThrownBy(() -> authentication.isValid(defaultAccount, "password", "123456"))
                 .isInstanceOf(AuthenticationException.class)
@@ -122,7 +136,7 @@ class AuthenticationServiceTest {
     private void logShouldContains(String account, int failedCount) {
         ArgumentCaptor<String> accountArgumentCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Integer> failedCountArgumentCaptor = ArgumentCaptor.forClass(Integer.class);
-        Mockito.verify(logger).info((String) ArgumentMatchers.any(), accountArgumentCaptor.capture(), failedCountArgumentCaptor.capture());
+        Mockito.verify(logger).info(ArgumentMatchers.anyString(), accountArgumentCaptor.capture(), failedCountArgumentCaptor.capture());
         Assertions.assertThat(accountArgumentCaptor.getValue()).isEqualTo(account);
         Assertions.assertThat(failedCountArgumentCaptor.getValue()).isEqualTo(failedCount);
     }
