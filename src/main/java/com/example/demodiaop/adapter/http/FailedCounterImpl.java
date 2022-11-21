@@ -1,4 +1,7 @@
-package com.example.demodiaop;
+package com.example.demodiaop.adapter.http;
+
+import com.example.demodiaop.service.authentication.exception.AuthenticationException;
+import com.example.demodiaop.service.authentication.gateway.FailedCounter;
 
 import java.io.IOException;
 import java.net.URI;

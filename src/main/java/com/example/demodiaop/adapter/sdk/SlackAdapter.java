@@ -1,5 +1,7 @@
-package com.example.demodiaop;
+package com.example.demodiaop.adapter.sdk;
 
+import com.example.demodiaop.service.authentication.exception.AuthenticationException;
+import com.example.demodiaop.service.authentication.gateway.Notification;
 import com.slack.api.Slack;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;

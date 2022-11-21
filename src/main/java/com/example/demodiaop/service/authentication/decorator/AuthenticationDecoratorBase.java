@@ -1,4 +1,6 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication.decorator;
+
+import com.example.demodiaop.service.authentication.Authentication;
 
 public abstract class AuthenticationDecoratorBase implements Authentication {
 

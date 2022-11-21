@@ -1,8 +1,11 @@
-package com.example.demodiaop;
+package com.example.demodiaop.adapter.dao.repo;
+
+import com.example.demodiaop.service.authentication.exception.AuthenticationException;
+import com.example.demodiaop.service.authentication.gateway.Profile;
 
 import java.sql.*;
 
-public class ProfileDaoImpl implements Profile {
+public class ProfileRepo implements Profile {
 
     @Override
     public String getPassword(String account) {

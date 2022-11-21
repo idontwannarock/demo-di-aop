@@ -1,4 +1,7 @@
-package com.example.demodiaop;
+package com.example.demodiaop.adapter.sdk;
+
+import com.example.demodiaop.service.authentication.exception.AuthenticationException;
+import com.example.demodiaop.service.authentication.gateway.Hash;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

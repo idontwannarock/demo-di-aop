@@ -1,4 +1,8 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication;
+
+import com.example.demodiaop.service.authentication.gateway.Hash;
+import com.example.demodiaop.service.authentication.gateway.OtpService;
+import com.example.demodiaop.service.authentication.gateway.Profile;
 
 public class AuthenticationService implements Authentication {
 

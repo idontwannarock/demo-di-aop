@@ -1,4 +1,4 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication.gateway;
 
 public interface FailedCounter {
     void increase(String account);

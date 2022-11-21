@@ -1,4 +1,8 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication.decorator;
+
+import com.example.demodiaop.service.authentication.Authentication;
+import com.example.demodiaop.service.authentication.gateway.FailedCounter;
+import com.example.demodiaop.service.authentication.exception.AuthenticationException;
 
 public class FailedCounterDecorator extends AuthenticationDecoratorBase {
 

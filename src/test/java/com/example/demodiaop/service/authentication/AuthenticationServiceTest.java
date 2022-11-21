@@ -1,5 +1,10 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication;
 
+import com.example.demodiaop.service.authentication.decorator.FailedCounterDecorator;
+import com.example.demodiaop.service.authentication.decorator.LogDecorator;
+import com.example.demodiaop.service.authentication.decorator.NotificationDecorator;
+import com.example.demodiaop.service.authentication.exception.AuthenticationException;
+import com.example.demodiaop.service.authentication.gateway.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

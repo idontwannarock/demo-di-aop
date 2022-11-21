@@ -1,4 +1,4 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication.exception;
 
 public class AuthenticationException extends RuntimeException {
 

@@ -1,4 +1,7 @@
-package com.example.demodiaop;
+package com.example.demodiaop.service.authentication.decorator;
+
+import com.example.demodiaop.service.authentication.Authentication;
+import com.example.demodiaop.service.authentication.gateway.Notification;
 
 public class NotificationDecorator extends AuthenticationDecoratorBase {
 
