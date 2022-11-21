@@ -1,12 +1,11 @@
 package com.example.demodiaop;
 
-public class FailedCounterDecorator implements Authentication {
+public class FailedCounterDecorator extends AuthenticationDecoratorBase {
 
-    private final Authentication authentication;
     private final FailedCounter failedCounter;
 
     public FailedCounterDecorator(Authentication authentication, FailedCounter failedCounter) {
-        this.authentication = authentication;
+        super(authentication);
         this.failedCounter = failedCounter;
     }
 

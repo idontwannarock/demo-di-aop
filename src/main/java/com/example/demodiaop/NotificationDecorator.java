@@ -1,13 +1,12 @@
 package com.example.demodiaop;
 
-public class NotificationDecorator implements Authentication {
+public class NotificationDecorator extends AuthenticationDecoratorBase {
 
-    private final Authentication authentication;
     private final Notification notification;
 
     public NotificationDecorator(Authentication authentication, Notification notification) {
+        super(authentication);
         this.notification = notification;
-        this.authentication = authentication;
     }
 
     @Override

@@ -2,14 +2,13 @@ package com.example.demodiaop;
 
 import org.slf4j.Logger;
 
-public class LogDecorator implements Authentication {
+public class LogDecorator extends AuthenticationDecoratorBase {
 
-    private final Authentication authentication;
     private final FailedCounter failedCounter;
     private final Logger logger;
 
     public LogDecorator(Authentication authentication, FailedCounter failedCounter, Logger logger) {
-        this.authentication = authentication;
+        super(authentication);
         this.failedCounter = failedCounter;
         this.logger = logger;
     }
