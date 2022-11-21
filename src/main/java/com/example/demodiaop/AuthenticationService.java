@@ -37,9 +37,13 @@ public class AuthenticationService implements Authentication {
         } else {
             failedCounter.increase(account);
             logFailedCount(account);
-            notification.notify(account);
+            notify(account);
             return false;
         }
+    }
+
+    private void notify(String account) {
+        notification.notify(account);
     }
 
     private void logFailedCount(String account) {
