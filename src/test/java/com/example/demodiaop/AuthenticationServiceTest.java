@@ -29,7 +29,9 @@ class AuthenticationServiceTest {
         notification = Mockito.mock(Notification.class);
         failedCounter = Mockito.mock(FailedCounter.class);
         logger = Mockito.mock(Logger.class);
-        authentication = new AuthenticationService(profile, hash, otpService, notification, failedCounter, logger);
+
+        authentication = new AuthenticationService(profile, hash, otpService, failedCounter, logger);
+        authentication = new NotificationDecorator(authentication, notification);
     }
 
     @Test
@@ -112,7 +114,7 @@ class AuthenticationServiceTest {
     }
 
     private void shouldNotify(String account) {
-        Mockito.verify(notification, Mockito.times(1)).notify(account);
+        Mockito.verify(notification, Mockito.times(1)).notify(account, "account: " + account + " failed to login.");
     }
 
     private void logShouldContains(String account, int failedCount) {

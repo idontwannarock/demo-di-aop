@@ -10,11 +10,14 @@ import java.io.IOException;
 public class SlackAdapter implements Notification {
 
     @Override
-    public void notify(String account) {
+    public void notify(String account, String message) {
         try {
             Slack slack = Slack.getInstance();
             MethodsClient methodClient = slack.methods("slackToken");
-            ChatPostMessageRequest messageRequest = ChatPostMessageRequest.builder().channel("#random").text("account: " + account + " failed to login.").build();
+            ChatPostMessageRequest messageRequest = ChatPostMessageRequest.builder()
+                    .channel("#random")
+                    .text(message)
+                    .build();
             methodClient.chatPostMessage(messageRequest);
         } catch (IOException | SlackApiException e) {
             throw new AuthenticationException("Slack web api error, account: " + account, e);
