@@ -7,15 +7,13 @@ public class AuthenticationService implements Authentication {
     private final Profile profile;
     private final Hash hash;
     private final OtpService otpService;
-    private final Notification notification;
     private final FailedCounter failedCounter;
     private final Logger logger;
 
-    public AuthenticationService(Profile profile, Hash hash, OtpService otpService, Notification notification, FailedCounter failedCounter, Logger logger) {
+    public AuthenticationService(Profile profile, Hash hash, OtpService otpService, FailedCounter failedCounter, Logger logger) {
         this.profile = profile;
         this.hash = hash;
         this.otpService = otpService;
-        this.notification = notification;
         this.failedCounter = failedCounter;
         this.logger = logger;
     }
@@ -37,7 +35,6 @@ public class AuthenticationService implements Authentication {
         } else {
             failedCounter.increase(account);
             logFailedCount(account);
-            notification.notify(account);
             return false;
         }
     }

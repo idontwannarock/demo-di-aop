@@ -1,5 +1,5 @@
 package com.example.demodiaop;
 
 public interface Notification {
-    void notify(String account);
+    void notify(String account, String message);
 }
