@@ -16,15 +16,19 @@ public class AuthenticationService implements Authentication {
 
     @Override
     public boolean isValid(String account, String password, String otp) {
-        boolean isLocked = failedCounter.isLocked(account);
-        if (isLocked) {
-            throw new AuthenticationException("account: " + account + " is locked");
-        }
+        checkAccountLocked(account);
 
         String passwordFromDb = profile.getPassword(account);
         String hashedPassword = hash.compute(account, password);
         String currentOtp = otpService.getCurrentOtp(account);
 
         return hashedPassword.equals(passwordFromDb) && currentOtp.equals(otp);
+    }
+
+    private void checkAccountLocked(String account) {
+        boolean isLocked = failedCounter.isLocked(account);
+        if (isLocked) {
+            throw new AuthenticationException("account: " + account + " is locked");
+        }
     }
 }
