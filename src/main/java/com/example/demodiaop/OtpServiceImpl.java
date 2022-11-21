@@ -17,10 +17,17 @@ public class OtpServiceImpl implements OtpService {
             if (response.statusCode() == 200) {
                 return response.body();
             } else {
-                throw new AuthenticationException("get current OTP web api error, account: " + account);
+                throw new AuthenticationException(getMessage(account));
             }
-        } catch (IOException | InterruptedException e) {
-            throw new AuthenticationException("get current OTP web api error, account: " + account, e);
+        } catch (IOException e) {
+            throw new AuthenticationException(getMessage(account), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new AuthenticationException(getMessage(account), e);
         }
+    }
+
+    private static String getMessage(String account) {
+        return "get current OTP web api error, account: " + account;
     }
 }
