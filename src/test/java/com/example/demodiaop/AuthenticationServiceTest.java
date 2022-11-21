@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 
@@ -81,7 +82,7 @@ class AuthenticationServiceTest {
         givenFailedCount(defaultAccount, defaultFailedCount);
         whenInvalid();
         // assert
-        logShouldContains(defaultAccount, defaultFailedCount.toString());
+        logShouldContains(defaultAccount, defaultFailedCount);
     }
 
     @Test
@@ -114,10 +115,12 @@ class AuthenticationServiceTest {
         Mockito.verify(notification, Mockito.times(1)).notify(account);
     }
 
-    private void logShouldContains(String account, String failedCount) {
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(logger).info(argumentCaptor.capture());
-        Assertions.assertThat(argumentCaptor.getValue()).contains(account, failedCount);
+    private void logShouldContains(String account, int failedCount) {
+        ArgumentCaptor<String> accountArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Integer> failedCountArgumentCaptor = ArgumentCaptor.forClass(Integer.class);
+        Mockito.verify(logger).info((String) ArgumentMatchers.any(), accountArgumentCaptor.capture(), failedCountArgumentCaptor.capture());
+        Assertions.assertThat(accountArgumentCaptor.getValue()).isEqualTo(account);
+        Assertions.assertThat(failedCountArgumentCaptor.getValue()).isEqualTo(failedCount);
     }
 
     private void givenFailedCount(String account, int failedCount) {
